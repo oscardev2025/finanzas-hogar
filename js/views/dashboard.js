@@ -10,6 +10,8 @@ App.views.dashboard = (function () {
   function renderKpis() {
     const t = totalesMes(App.nav.currentMonth);
     document.getElementById('kpiIngresos').textContent = fmt(t.ingresos);
+    document.getElementById('kpiIngresosDetalle').textContent =
+      `Fijos ${fmt(t.ingresosFijos)} · Variables ${fmt(t.ingresosVariables)}`;
     document.getElementById('kpiGastos').textContent = fmt(t.gastos);
     document.getElementById('kpiGastosDetalle').textContent =
       `Fijos ${fmt(t.fijos)} · Variables ${fmt(t.variables)}`;

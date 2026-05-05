@@ -14,14 +14,15 @@ App.config = {
   ],
 
   viewTitles: {
-    dashboard:    ['Dashboard', 'Resumen de tus finanzas'],
-    ingresos:     ['Ingresos', 'Registra tus ganancias'],
-    fijos:        ['Gastos Fijos', 'Suscripciones y pagos recurrentes'],
-    variables:    ['Gastos Variables', 'Gastos que surjan en el día a día'],
-    presupuestos: ['Presupuestos', 'Asigna un límite por categoría y mes'],
-    ahorros:      ['Ahorros', 'Tus aportes y metas'],
-    flujo:        ['Flujo de Caja', 'Histórico mes a mes'],
-    ajustes:      ['Ajustes', 'Categorías y preferencias']
+    dashboard:     ['Dashboard', 'Resumen de tus finanzas'],
+    ingresosFijos: ['Ingresos Fijos', 'Sueldo y otros ingresos recurrentes mensuales'],
+    ingresos:      ['Ingresos Variables', 'Ingresos puntuales con fecha (freelance, ventas, regalos…)'],
+    fijos:         ['Gastos Fijos', 'Suscripciones y pagos recurrentes'],
+    variables:     ['Gastos Variables', 'Gastos que surjan en el día a día'],
+    presupuestos:  ['Presupuestos', 'Asigna un límite por categoría y mes'],
+    ahorros:       ['Ahorros', 'Tus aportes y metas'],
+    flujo:         ['Flujo de Caja', 'Histórico mes a mes'],
+    ajustes:       ['Ajustes', 'Categorías y preferencias']
   },
 
   tailwind: {
@@ -41,6 +42,7 @@ App.config = {
 };
 
 App.config.defaultState = {
+  ingresosFijos: [],
   ingresos: [],
   fijos: [],
   variables: [],

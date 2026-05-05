@@ -17,6 +17,19 @@ App.forms = (function () {
     });
   }
 
+  function bindIngresoFijo() {
+    document.getElementById('formIngresoFijo').addEventListener('submit', e => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      App.state.ingresosFijos.push({
+        id: uid(),
+        concepto: f.get('concepto'),
+        monto: parseFloat(f.get('monto'))
+      });
+      App.store.save(); App.render(); e.target.reset(); toast('Ingreso fijo agregado');
+    });
+  }
+
   function bindFijo() {
     document.getElementById('formFijo').addEventListener('submit', e => {
       e.preventDefault();
@@ -162,6 +175,7 @@ App.forms = (function () {
 
   function init() {
     bindIngreso();
+    bindIngresoFijo();
     bindFijo();
     bindVariable();
     bindPresupuesto();

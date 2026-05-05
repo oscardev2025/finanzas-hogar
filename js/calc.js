@@ -5,13 +5,16 @@ App.calc = (function () {
 
   function totalesMes(month) {
     const s = App.state;
-    const ingresos  = s.ingresos.filter(i => ymKey(i.fecha) === month).reduce((a, b) => a + Number(b.monto), 0);
-    const fijos     = s.fijos.reduce((a, b) => a + Number(b.monto), 0);
-    const variables = s.variables.filter(i => ymKey(i.fecha) === month).reduce((a, b) => a + Number(b.monto), 0);
-    const aportes   = s.ahorros.filter(i => ymKey(i.fecha) === month && i.tipo === 'aporte').reduce((a, b) => a + Number(b.monto), 0);
-    const retiros   = s.ahorros.filter(i => ymKey(i.fecha) === month && i.tipo === 'retiro').reduce((a, b) => a + Number(b.monto), 0);
+    const ingresosFijos     = (s.ingresosFijos || []).reduce((a, b) => a + Number(b.monto), 0);
+    const ingresosVariables = s.ingresos.filter(i => ymKey(i.fecha) === month).reduce((a, b) => a + Number(b.monto), 0);
+    const ingresos          = ingresosFijos + ingresosVariables;
+    const fijos             = s.fijos.reduce((a, b) => a + Number(b.monto), 0);
+    const variables         = s.variables.filter(i => ymKey(i.fecha) === month).reduce((a, b) => a + Number(b.monto), 0);
+    const aportes           = s.ahorros.filter(i => ymKey(i.fecha) === month && i.tipo === 'aporte').reduce((a, b) => a + Number(b.monto), 0);
+    const retiros           = s.ahorros.filter(i => ymKey(i.fecha) === month && i.tipo === 'retiro').reduce((a, b) => a + Number(b.monto), 0);
     return {
-      ingresos, fijos, variables, aportes, retiros,
+      ingresos, ingresosFijos, ingresosVariables,
+      fijos, variables, aportes, retiros,
       gastos: fijos + variables,
       balance: ingresos - fijos - variables - aportes + retiros
     };

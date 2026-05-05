@@ -5,6 +5,10 @@ App.bulk = (function () {
   let editingKey = null;
 
   const FIELDS = {
+    ingresosFijos: [
+      { name: 'concepto', label: 'Concepto',  type: 'text'   },
+      { name: 'monto',    label: 'Monto',     type: 'number', step: '0.01' }
+    ],
     ingresos: [
       { name: 'fecha',    label: 'Fecha',     type: 'date'   },
       { name: 'concepto', label: 'Concepto',  type: 'text'   },

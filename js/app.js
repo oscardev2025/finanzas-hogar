@@ -3,6 +3,7 @@ window.App = window.App || {};
 App.render = function render() {
   App.nav.buildMonthOptions();
   App.views.dashboard.render();
+  App.views.ingresosFijos.render();
   App.views.ingresos.render();
   App.views.fijos.render();
   App.views.variables.render();
