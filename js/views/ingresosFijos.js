@@ -12,10 +12,14 @@ App.views.ingresosFijos = (function () {
     const ovrBadge = numOvr > 0
       ? `<span class="inline-flex items-center gap-1 ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">${numOvr}</span>`
       : '';
+    const vigLbl = App.utils.vigenciaLabel(r);
+    const vigBadge = vigLbl
+      ? `<div class="text-[10px] text-slate-500 mt-0.5">📅 ${vigLbl}</div>`
+      : '';
     return `
       <tr class="border-t border-slate-100 hover:bg-slate-50">
         ${App.bulk.checkboxCell('ingresosFijos', r.id)}
-        <td class="px-4 py-3">${r.concepto}</td>
+        <td class="px-4 py-3">${r.concepto}${vigBadge}</td>
         <td class="px-4 py-3 text-right font-semibold text-emerald-600">+${fmt(r.monto)}</td>
         <td class="px-4 py-3 text-right whitespace-nowrap">
           <button data-ovr-ifij="${r.id}" class="text-amber-600 hover:text-amber-700 text-xs mr-3">Por mes${ovrBadge}</button>

@@ -42,5 +42,17 @@ App.utils = (function () {
     if (fecha && !fecha.value) fecha.value = new Date().toISOString().slice(0, 10);
   }
 
-  return { uid, fmt, fmtSign, ymKey, ymLabel, getCategoria, toast, setToday };
+  function ymShort(key) {
+    const [y, m] = key.split('-').map(Number);
+    return new Date(y, m - 1, 1).toLocaleDateString('es-MX', { month: 'short', year: '2-digit' });
+  }
+
+  function vigenciaLabel(item) {
+    if (!item.vigenciaDesde && !item.vigenciaHasta) return '';
+    const d = item.vigenciaDesde ? ymShort(item.vigenciaDesde) : '∞';
+    const h = item.vigenciaHasta ? ymShort(item.vigenciaHasta) : '∞';
+    return `${d} → ${h}`;
+  }
+
+  return { uid, fmt, fmtSign, ymKey, ymLabel, ymShort, getCategoria, toast, setToday, vigenciaLabel };
 })();

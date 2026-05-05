@@ -475,6 +475,21 @@
         <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
+    <div class="px-5 py-3 border-b border-slate-100 bg-slate-50/50">
+      <div class="flex flex-wrap items-end gap-3">
+        <div class="text-xs font-medium text-slate-600 mr-2">Vigencia:</div>
+        <label class="flex flex-col">
+          <span class="text-[10px] uppercase tracking-wide text-slate-500 mb-1">Desde</span>
+          <input id="overridesVigDesde" type="month" class="border border-slate-200 rounded-lg px-2 py-1 text-sm bg-white" />
+        </label>
+        <label class="flex flex-col">
+          <span class="text-[10px] uppercase tracking-wide text-slate-500 mb-1">Hasta</span>
+          <input id="overridesVigHasta" type="month" class="border border-slate-200 rounded-lg px-2 py-1 text-sm bg-white" />
+        </label>
+        <button id="overridesVigClear" class="text-xs text-rose-500 hover:text-rose-700 px-2 py-1.5 hidden">Limpiar vigencia</button>
+        <span class="text-xs text-slate-400 ml-auto">Vacío = aplica siempre</span>
+      </div>
+    </div>
     <div class="overflow-y-auto p-2">
       <table class="w-full">
         <thead class="bg-slate-50 text-slate-500 text-xs uppercase">

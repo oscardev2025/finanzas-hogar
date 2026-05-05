@@ -21,8 +21,17 @@ App.calc = (function () {
     }
   }
 
-  // Monto efectivo de un fijo / ingresoFijo en un mes dado. Devuelve null si está omitido.
+  // ¿Está el ítem vigente en el mes dado? Considera vigenciaDesde/Hasta.
+  function dentroDeVigencia(item, mes) {
+    if (item.vigenciaDesde && mes < item.vigenciaDesde) return false;
+    if (item.vigenciaHasta && mes > item.vigenciaHasta) return false;
+    return true;
+  }
+
+  // Monto efectivo de un fijo / ingresoFijo en un mes dado. Devuelve null si
+  // no aplica (fuera de vigencia o omitido por override).
   function montoEfectivo(tipo, item, mes) {
+    if (!dentroDeVigencia(item, mes)) return null;
     const ovr = getOverride(tipo, item.id, mes);
     if (ovr?.omitido) return null;
     if (ovr?.monto != null && !isNaN(Number(ovr.monto))) return Number(ovr.monto);
@@ -217,7 +226,7 @@ App.calc = (function () {
   return {
     totalesMes, totalAhorrado, distribucionGastos, mesesUltimos,
     gastoCategoriaMes, presupuestoCategoriaMes, estadoPresupuesto,
-    montoEfectivo, getOverride, setOverride,
+    montoEfectivo, dentroDeVigencia, getOverride, setOverride,
     isClosed, cerrarMes, reabrirMes,
     saldoInicioMes, saldoFinMes, balanceCajaMes
   };
