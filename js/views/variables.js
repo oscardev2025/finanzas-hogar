@@ -3,9 +3,11 @@ App.views = App.views || {};
 
 App.views.variables = (function () {
   const { fmt, getCategoria, toast } = App.utils;
+  const filters = App.views._filters;
 
   let editId = null;
   let bound = false;
+  const state = { categoria: '', sort: 'fecha-desc' };
 
   function rowVista(r) {
     const c = getCategoria(r.categoria);
@@ -75,15 +77,28 @@ App.views.variables = (function () {
     });
   }
 
+  function setCategoria(v) { state.categoria = v; App.render(); }
+  function setSort(v)      { state.sort = v;      App.render(); }
+  function reset()         { state.categoria = ''; state.sort = 'fecha-desc'; App.render(); }
+
   function render() {
-    const rows = [...App.state.variables].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    const all = App.state.variables;
+    const rows = filters.apply(all, state, true);
+
+    document.getElementById('filterBar-variables').innerHTML = filters.toolbarHTML('variables', state, true);
+
     document.getElementById('tablaVariables').innerHTML = rows.length
       ? rows.map(r => r.id === editId ? rowEdicion(r) : rowVista(r)).join('')
-      : `<tr><td colspan="6" class="text-center py-8 text-slate-400 text-sm">Sin gastos variables</td></tr>`;
+      : `<tr><td colspan="6" class="text-center py-8 text-slate-400 text-sm">${all.length ? 'Sin resultados con este filtro' : 'Sin gastos variables'}</td></tr>`;
+
+    document.getElementById('totalsBar-variables').innerHTML = filters.totalsHTML(rows, all, 'Total mostrado');
     document.getElementById('bulkBar-variables').innerHTML = App.bulk.barHTML('variables');
+    App.bulk.setVisible('variables', rows.map(r => r.id));
     App.bulk.syncSelectAll('variables');
     bindAcciones();
+
+    if (typeof App.views.variables.updateHint === 'function') App.views.variables.updateHint();
   }
 
-  return { render };
+  return { render, setCategoria, setSort, reset };
 })();

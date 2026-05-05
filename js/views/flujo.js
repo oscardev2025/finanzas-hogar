@@ -50,8 +50,11 @@ App.views.flujo = (function () {
       },
       options: {
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { y: { ticks: { callback: v => fmt(v) } } }
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => fmtSign(ctx.parsed.y) } }
+        },
+        scales: { y: { ticks: { callback: v => fmtSign(v) } } }
       }
     });
   }

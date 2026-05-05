@@ -248,6 +248,7 @@
         </form>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div id="filterBar-fijos"></div>
         <div id="bulkBar-fijos"></div>
         <table class="w-full text-sm">
           <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
@@ -258,6 +259,7 @@
           </thead>
           <tbody id="tablaFijos"></tbody>
         </table>
+        <div id="totalsBar-fijos"></div>
       </div>
     </section>
 
@@ -275,6 +277,7 @@
         <p id="hintPresupuestoVar" class="text-xs text-slate-500 mt-3 hidden"></p>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div id="filterBar-variables"></div>
         <div id="bulkBar-variables"></div>
         <table class="w-full text-sm">
           <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
@@ -285,6 +288,7 @@
           </thead>
           <tbody id="tablaVariables"></tbody>
         </table>
+        <div id="totalsBar-variables"></div>
       </div>
     </section>
 
@@ -448,6 +452,7 @@
 <script src="js/store.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/calc.js"></script>
+<script src="js/views/_filters.js"></script>
 <script src="js/views/dashboard.js"></script>
 <script src="js/views/ingresosFijos.js"></script>
 <script src="js/views/ingresos.js"></script>

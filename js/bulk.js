@@ -2,7 +2,15 @@ window.App = window.App || {};
 
 App.bulk = (function () {
   const selections = {};
+  const visibleIds = {};
   let editingKey = null;
+
+  function setVisible(key, ids) { visibleIds[key] = ids; }
+  function getVisible(key) {
+    return visibleIds[key] && visibleIds[key].length
+      ? visibleIds[key]
+      : (App.state[key] || []).map(x => x.id);
+  }
 
   const FIELDS = {
     ingresosFijos: [
@@ -76,10 +84,11 @@ App.bulk = (function () {
   function syncSelectAll(key) {
     const el = document.getElementById(`bulkSelAll-${key}`);
     if (!el) return;
-    const total = (App.state[key] || []).length;
-    const sel = getSet(key).size;
-    el.checked = total > 0 && sel === total;
-    el.indeterminate = sel > 0 && sel < total;
+    const visible = getVisible(key);
+    const set = getSet(key);
+    const selVisible = visible.filter(id => set.has(id)).length;
+    el.checked = visible.length > 0 && selVisible === visible.length;
+    el.indeterminate = selVisible > 0 && selVisible < visible.length;
   }
 
   function barHTML(key) {
@@ -151,10 +160,11 @@ App.bulk = (function () {
       } else if (t.dataset.bulkSelectAll) {
         const key = t.dataset.bulkSelectAll;
         const set = getSet(key);
+        const visible = getVisible(key);
         if (t.checked) {
-          (App.state[key] || []).forEach(x => set.add(x.id));
+          visible.forEach(id => set.add(id));
         } else {
-          set.clear();
+          visible.forEach(id => set.delete(id));
         }
         App.render();
       }
@@ -196,6 +206,7 @@ App.bulk = (function () {
   return {
     init, isSelected, getSet, clear,
     checkboxCell, emptyCell, rowDuplicarBtn,
-    barHTML, syncSelectAll, duplicarUno
+    barHTML, syncSelectAll, duplicarUno,
+    setVisible
   };
 })();

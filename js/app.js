@@ -23,6 +23,10 @@ async function bootApp() {
   App.forms.init();
   App.bulk.init();
   App.io.init();
+  App.views._filters.bindEvents({
+    fijos:     App.views.fijos,
+    variables: App.views.variables
+  });
 
   document.getElementById('logoutBtn')?.addEventListener('click', () => {
     if (confirm('¿Cerrar sesión?')) App.auth.logout();

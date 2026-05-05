@@ -3,9 +3,11 @@ App.views = App.views || {};
 
 App.views.fijos = (function () {
   const { fmt, getCategoria, toast } = App.utils;
+  const filters = App.views._filters;
 
   let editId = null;
   let bound = false;
+  const state = { categoria: '', sort: 'cat' };
 
   function rowVista(r) {
     const c = getCategoria(r.categoria);
@@ -70,15 +72,26 @@ App.views.fijos = (function () {
     });
   }
 
+  function setCategoria(v) { state.categoria = v; App.render(); }
+  function setSort(v)      { state.sort = v;      App.render(); }
+  function reset()         { state.categoria = ''; state.sort = 'cat'; App.render(); }
+
   function render() {
-    const rows = App.state.fijos;
+    const all = App.state.fijos;
+    const rows = filters.apply(all, state, false);
+
+    document.getElementById('filterBar-fijos').innerHTML = filters.toolbarHTML('fijos', state, false);
+
     document.getElementById('tablaFijos').innerHTML = rows.length
       ? rows.map(r => r.id === editId ? rowEdicion(r) : rowVista(r)).join('')
-      : `<tr><td colspan="5" class="text-center py-8 text-slate-400 text-sm">Sin gastos fijos</td></tr>`;
+      : `<tr><td colspan="5" class="text-center py-8 text-slate-400 text-sm">${all.length ? 'Sin resultados con este filtro' : 'Sin gastos fijos'}</td></tr>`;
+
+    document.getElementById('totalsBar-fijos').innerHTML = filters.totalsHTML(rows, all, 'Total mensual');
     document.getElementById('bulkBar-fijos').innerHTML = App.bulk.barHTML('fijos');
+    App.bulk.setVisible('fijos', rows.map(r => r.id));
     App.bulk.syncSelectAll('fijos');
     bindAcciones();
   }
 
-  return { render };
+  return { render, setCategoria, setSort, reset };
 })();
