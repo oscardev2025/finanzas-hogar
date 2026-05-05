@@ -8,12 +8,17 @@ App.views.ingresosFijos = (function () {
   let bound = false;
 
   function rowVista(r) {
+    const numOvr = Object.keys(App.state.overrides?.ingresosFijos?.[r.id] || {}).length;
+    const ovrBadge = numOvr > 0
+      ? `<span class="inline-flex items-center gap-1 ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">${numOvr}</span>`
+      : '';
     return `
       <tr class="border-t border-slate-100 hover:bg-slate-50">
         ${App.bulk.checkboxCell('ingresosFijos', r.id)}
         <td class="px-4 py-3">${r.concepto}</td>
         <td class="px-4 py-3 text-right font-semibold text-emerald-600">+${fmt(r.monto)}</td>
         <td class="px-4 py-3 text-right whitespace-nowrap">
+          <button data-ovr-ifij="${r.id}" class="text-amber-600 hover:text-amber-700 text-xs mr-3">Por mes${ovrBadge}</button>
           <button data-edit-ifij="${r.id}" class="text-brand-600 hover:text-brand-700 text-xs mr-3">Editar</button>
           ${App.bulk.rowDuplicarBtn('ingresosFijos', r.id)}
           <button data-del="ingresosFijos" data-id="${r.id}" class="text-rose-500 hover:text-rose-700 text-xs">Eliminar</button>
@@ -44,6 +49,9 @@ App.views.ingresosFijos = (function () {
     const tbody = document.getElementById('tablaIngresosFijos');
 
     tbody.addEventListener('click', e => {
+      const ovr = e.target.closest('[data-ovr-ifij]')?.dataset.ovrIfij;
+      if (ovr) { App.overrides.open('ingresosFijos', ovr); return; }
+
       const editar = e.target.dataset.editIfij;
       if (editar) { editId = editar; render(); return; }
       if (e.target.dataset.cancelIfij) { editId = null; render(); return; }

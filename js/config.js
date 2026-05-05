@@ -50,5 +50,23 @@ App.config.defaultState = {
   presupuestos: [],
   categorias: App.config.defaultCategorias,
   metaAhorro: { monto: 0, descripcion: '' },
-  moneda: '$'
+  moneda: '$',
+
+  // Overrides mensuales por fijo / ingresoFijo:
+  //   overrides.fijos[fijoId]['YYYY-MM'] = { monto?: number, omitido?: true, nota?: string }
+  //   monto presente => sustituye al default; omitido === true => no aplica ese mes.
+  overrides: { fijos: {}, ingresosFijos: {} },
+
+  // Snapshots de meses cerrados:
+  //   cierres['YYYY-MM'] = {
+  //     cerradoEn: ISO,
+  //     ingresosFijos: [{id,concepto,monto}],
+  //     fijos: [{id,concepto,categoria,monto}],
+  //     totales: { ingresosFijos, ingresosVariables, ingresos, fijos, variables, aportes, retiros, gastos, balance },
+  //     saldoInicio, saldoFin
+  //   }
+  cierres: {},
+
+  // Saldo de partida para el flujo de caja acumulado.
+  saldoInicial: { mes: '', monto: 0 }
 };

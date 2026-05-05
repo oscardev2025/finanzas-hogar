@@ -190,6 +190,9 @@ App.bulk = (function () {
         if (set.size === 0) return;
         if (!confirm(`¿Eliminar ${set.size} registro${set.size > 1 ? 's' : ''}?`)) return;
         App.state[key] = App.state[key].filter(x => !set.has(x.id));
+        if ((key === 'fijos' || key === 'ingresosFijos') && App.state.overrides?.[key]) {
+          set.forEach(id => delete App.state.overrides[key][id]);
+        }
         clear(key); App.store.save(); App.render(); App.utils.toast('Eliminados');
         return;
       }

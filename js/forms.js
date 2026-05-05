@@ -149,6 +149,9 @@ App.forms = (function () {
         const id = e.target.dataset.id;
         if (!confirm('¿Eliminar este registro?')) return;
         App.state[del] = App.state[del].filter(x => x.id !== id);
+        if ((del === 'fijos' || del === 'ingresosFijos') && App.state.overrides?.[del]?.[id]) {
+          delete App.state.overrides[del][id];
+        }
         App.store.save(); App.render(); toast('Eliminado');
         return;
       }
@@ -173,6 +176,18 @@ App.forms = (function () {
     });
   }
 
+  function bindSaldoInicial() {
+    document.getElementById('formSaldoInicial').addEventListener('submit', e => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const mes = (f.get('mes') || '').trim();
+      const monto = parseFloat(f.get('monto'));
+      if (!mes || isNaN(monto)) { toast('Datos inválidos'); return; }
+      App.state.saldoInicial = { mes, monto };
+      App.store.save(); App.render(); toast('Saldo inicial guardado');
+    });
+  }
+
   function init() {
     bindIngreso();
     bindIngresoFijo();
@@ -184,6 +199,7 @@ App.forms = (function () {
     bindCategoria();
     bindEliminaciones();
     bindMoneda();
+    bindSaldoInicial();
     document.querySelectorAll('form').forEach(setToday);
   }
 

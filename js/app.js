@@ -23,6 +23,7 @@ async function bootApp() {
   App.forms.init();
   App.bulk.init();
   App.io.init();
+  App.overrides.bind();
   App.views._filters.bindEvents({
     fijos:     App.views.fijos,
     variables: App.views.variables

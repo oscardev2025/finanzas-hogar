@@ -26,6 +26,22 @@ App.views.ajustes = (function () {
     document.getElementById('inputMoneda').value = App.state.moneda;
   }
 
+  function renderSaldoInicial() {
+    const { fmt, ymLabel } = App.utils;
+    const ini = App.state.saldoInicial || { mes: '', monto: 0 };
+    const form = document.getElementById('formSaldoInicial');
+    if (form) {
+      form.querySelector('input[name="mes"]').value = ini.mes || '';
+      form.querySelector('input[name="monto"]').value = ini.mes ? ini.monto : '';
+    }
+    const est = document.getElementById('saldoInicialEstado');
+    if (est) {
+      est.innerHTML = ini.mes
+        ? `Actualmente: <strong>${fmt(ini.monto)}</strong> al inicio de <strong class="capitalize">${ymLabel(ini.mes)}</strong>.`
+        : `Sin saldo inicial definido. El flujo arrancará desde 0.`;
+    }
+  }
+
   function renderSync() {
     const cont = document.getElementById('syncStatus');
     if (!cont) return;
@@ -41,6 +57,7 @@ App.views.ajustes = (function () {
     renderCategorias();
     renderCatSelects();
     renderPreferencias();
+    renderSaldoInicial();
     renderSync();
   }
 

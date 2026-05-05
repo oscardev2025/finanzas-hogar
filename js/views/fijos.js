@@ -11,6 +11,10 @@ App.views.fijos = (function () {
 
   function rowVista(r) {
     const c = getCategoria(r.categoria);
+    const numOvr = Object.keys(App.state.overrides?.fijos?.[r.id] || {}).length;
+    const ovrBadge = numOvr > 0
+      ? `<span class="inline-flex items-center gap-1 ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">${numOvr}</span>`
+      : '';
     return `
       <tr class="border-t border-slate-100 hover:bg-slate-50">
         ${App.bulk.checkboxCell('fijos', r.id)}
@@ -18,6 +22,7 @@ App.views.fijos = (function () {
         <td class="px-4 py-3"><span class="inline-flex items-center gap-1.5 text-xs px-2 py-1 rounded-full" style="background:${c.color}20;color:${c.color}">● ${c.nombre}</span></td>
         <td class="px-4 py-3 text-right font-semibold text-rose-600">${fmt(r.monto)}</td>
         <td class="px-4 py-3 text-right whitespace-nowrap">
+          <button data-ovr-fij="${r.id}" class="text-amber-600 hover:text-amber-700 text-xs mr-3">Por mes${ovrBadge}</button>
           <button data-edit-fij="${r.id}" class="text-brand-600 hover:text-brand-700 text-xs mr-3">Editar</button>
           ${App.bulk.rowDuplicarBtn('fijos', r.id)}
           <button data-del="fijos" data-id="${r.id}" class="text-rose-500 hover:text-rose-700 text-xs">Eliminar</button>
@@ -54,6 +59,9 @@ App.views.fijos = (function () {
     const tbody = document.getElementById('tablaFijos');
 
     tbody.addEventListener('click', e => {
+      const ovr = e.target.closest('[data-ovr-fij]')?.dataset.ovrFij;
+      if (ovr) { App.overrides.open('fijos', ovr); return; }
+
       const editar = e.target.dataset.editFij;
       if (editar) { editId = editar; render(); return; }
       if (e.target.dataset.cancelFij) { editId = null; render(); return; }
