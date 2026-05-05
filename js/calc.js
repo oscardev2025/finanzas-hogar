@@ -59,13 +59,19 @@ App.calc = (function () {
   function cerrarMes(mes) {
     const t = totalesMes(mes); // calcula con overrides actuales
     const snap = snapshotMes(mes);
+    const variables = App.state.variables.filter(v => ymKey(v.fecha) === mes).map(v => ({ ...v }));
+    const ingresosVariables = App.state.ingresos.filter(i => ymKey(i.fecha) === mes).map(i => ({ ...i }));
+    const ahorros = App.state.ahorros.filter(a => ymKey(a.fecha) === mes).map(a => ({ ...a }));
     const saldoInicio = saldoInicioMes(mes);
     const saldoFin = saldoInicio + t.balance - (t.aportes - t.retiros);
     if (!App.state.cierres) App.state.cierres = {};
     App.state.cierres[mes] = {
       cerradoEn: new Date().toISOString(),
       ingresosFijos: snap.ingresosFijos,
+      ingresosVariables,
       fijos: snap.fijos,
+      variables,
+      ahorros,
       totales: t,
       saldoInicio, saldoFin
     };
@@ -117,6 +123,18 @@ App.calc = (function () {
 
   function distribucionGastos(month) {
     const dist = {};
+    const cierre = App.state.cierres?.[month];
+
+    if (cierre) {
+      (cierre.fijos || []).forEach(f => {
+        dist[f.categoria] = (dist[f.categoria] || 0) + Number(f.monto);
+      });
+      (cierre.variables || []).forEach(v => {
+        dist[v.categoria] = (dist[v.categoria] || 0) + Number(v.monto);
+      });
+      return dist;
+    }
+
     (App.state.fijos || []).forEach(f => {
       const m = montoEfectivo('fijos', f, month);
       if (m === null) return;
@@ -138,6 +156,18 @@ App.calc = (function () {
   }
 
   function gastoCategoriaMes(categoriaId, month) {
+    const cierre = App.state.cierres?.[month];
+
+    if (cierre) {
+      const f = (cierre.fijos || [])
+        .filter(x => x.categoria === categoriaId)
+        .reduce((a, x) => a + Number(x.monto), 0);
+      const v = (cierre.variables || [])
+        .filter(x => x.categoria === categoriaId)
+        .reduce((a, x) => a + Number(x.monto), 0);
+      return f + v;
+    }
+
     const fijos = (App.state.fijos || [])
       .filter(f => f.categoria === categoriaId)
       .reduce((a, f) => {

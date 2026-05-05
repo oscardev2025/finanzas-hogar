@@ -1,23 +1,16 @@
 window.App = window.App || {};
 
 App.nav = (function () {
-  const { ymKey, ymLabel } = App.utils;
+  const { ymKey } = App.utils;
   const titles = App.config.viewTitles;
 
   let currentMonth = ymKey(new Date());
 
   function buildMonthOptions() {
     const sel = document.getElementById('monthSelector');
-    const months = new Set();
-    [...App.state.ingresos, ...App.state.variables, ...App.state.ahorros]
-      .forEach(i => months.add(ymKey(i.fecha)));
-    months.add(ymKey(new Date()));
-    const arr = [...months].sort().reverse();
-    if (!arr.includes(currentMonth)) currentMonth = arr[0];
+    if (!sel) return;
+    sel.value = currentMonth;
     App.nav.currentMonth = currentMonth;
-    sel.innerHTML = arr.map(k =>
-      `<option value="${k}" ${k === currentMonth ? 'selected' : ''}>${ymLabel(k)}</option>`
-    ).join('');
   }
 
   // Vistas que realmente filtran su contenido por el mes seleccionado.
@@ -55,6 +48,7 @@ App.nav = (function () {
       b.addEventListener('click', () => show(b.dataset.view))
     );
     document.getElementById('monthSelector').addEventListener('change', e => {
+      if (!e.target.value) { e.target.value = currentMonth; return; }
       currentMonth = e.target.value;
       App.nav.currentMonth = currentMonth;
       App.views.dashboard.render();
