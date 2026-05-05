@@ -27,7 +27,6 @@ App web para llevar las finanzas familiares. Frontend estático (HTML + JS vanil
 │       ├── logout.js       # POST /api/logout
 │       ├── session.js      # GET  /api/session
 │       └── data.js         # GET / PUT /api/data  (KV)
-├── wrangler.toml           # Binding KV para dev local
 ├── .dev.vars.example       # Variables de entorno para dev (copiar a .dev.vars)
 └── .gitignore
 ```
@@ -103,7 +102,7 @@ Listo: abre el dominio en cualquier navegador, ingresa con `FamiliaPM` / `VPM@20
 
 ---
 
-## Desarrollo local
+## Desarrollo local (opcional)
 
 Requiere [Node.js](https://nodejs.org/) y Wrangler:
 
@@ -112,11 +111,10 @@ npm install -g wrangler
 ```
 
 1. Copia `.dev.vars.example` a `.dev.vars` y pon valores de prueba.
-2. Crea (o reutiliza) un KV namespace y pega su ID en `wrangler.toml`.
-3. Lanza el dev server:
+2. Lanza el dev server con el KV bindeado a tu namespace:
 
 ```bash
-wrangler pages dev .
+wrangler pages dev . --kv FINANZAS_KV
 ```
 
 Abre http://localhost:8788.
