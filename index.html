@@ -368,7 +368,22 @@
     <!-- Flujo de caja -->
     <section id="view-flujo" class="view hidden fade-in">
       <div class="bg-white rounded-2xl p-5 border border-slate-200 mb-4">
-        <h3 class="font-semibold text-slate-900 mb-4">Flujo de caja acumulado</h3>
+        <div class="flex flex-wrap items-end justify-between gap-3 mb-4">
+          <h3 class="font-semibold text-slate-900">Flujo de caja acumulado</h3>
+          <div class="flex flex-wrap items-end gap-2 text-xs">
+            <label class="flex flex-col">
+              <span class="text-slate-500 mb-1">Desde</span>
+              <input id="flujoDesde" type="month" class="border border-slate-200 rounded-lg px-2 py-1.5 text-sm" />
+            </label>
+            <label class="flex flex-col">
+              <span class="text-slate-500 mb-1">Hasta</span>
+              <input id="flujoHasta" type="month" class="border border-slate-200 rounded-lg px-2 py-1.5 text-sm" />
+            </label>
+            <button id="flujoPreset12" class="border border-slate-200 hover:bg-slate-50 rounded-lg px-3 py-1.5 text-slate-700">12 meses</button>
+            <button id="flujoPreset24" class="border border-slate-200 hover:bg-slate-50 rounded-lg px-3 py-1.5 text-slate-700">24 meses</button>
+          </div>
+        </div>
+        <p class="text-xs text-slate-500 mb-3">Proyección a futuro asumiendo que tus ingresos y gastos fijos se repiten cada mes. Los meses pasados incluyen los movimientos variables ya registrados.</p>
         <div class="h-80"><canvas id="chartFlujoAcum"></canvas></div>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
