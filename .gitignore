@@ -17,3 +17,7 @@ Thumbs.db
 
 # Node (por si se añade luego)
 node_modules/
+
+.dev.vars*
+!.dev.vars.example
+!.env.example
