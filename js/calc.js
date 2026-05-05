@@ -48,7 +48,10 @@ App.calc = (function () {
     App.state.ingresos.forEach(i => meses.add(ymKey(i.fecha)));
     App.state.variables.forEach(i => meses.add(ymKey(i.fecha)));
     App.state.ahorros.forEach(i => meses.add(ymKey(i.fecha)));
-    if (meses.size === 0) meses.add(ymKey(new Date()));
+    // Garantizar al menos los últimos 6 meses + el actual, para que los
+    // ingresos/gastos fijos (que no llevan fecha) se reflejen en una serie
+    // temporal aunque no haya movimientos variables.
+    mesesUltimos(6).forEach(m => meses.add(m));
     return [...meses].sort();
   }
 

@@ -20,6 +20,9 @@ App.nav = (function () {
     ).join('');
   }
 
+  // Vistas que realmente filtran su contenido por el mes seleccionado.
+  const VIEWS_WITH_MONTH = new Set(['dashboard']);
+
   function show(view) {
     document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
     document.querySelector(`.nav-item[data-view="${view}"]`).classList.add('active');
@@ -31,6 +34,8 @@ App.nav = (function () {
 
     document.getElementById('viewTitle').textContent = titles[view][0];
     document.getElementById('viewSubtitle').textContent = titles[view][1];
+
+    document.getElementById('monthSelector').classList.toggle('hidden', !VIEWS_WITH_MONTH.has(view));
   }
 
   function init() {
