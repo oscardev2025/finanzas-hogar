@@ -1,0 +1,19 @@
+# Datos personales — nunca subir
+finanzas_*.json
+*.local.json
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+.env
+.env.*
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# Node (por si se añade luego)
+node_modules/

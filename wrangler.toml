@@ -1,0 +1,12 @@
+# Configuración para desarrollo local con `wrangler pages dev .`
+# En producción (Cloudflare Pages) el binding KV y los secrets
+# se configuran desde el panel web — ver README.md.
+
+name = "finanzas-hogar"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "."
+
+# Binding KV — reemplazar id por el real cuando se cree el namespace
+[[kv_namespaces]]
+binding = "FINANZAS_KV"
+id = "PEGAR_AQUI_EL_ID_DEL_NAMESPACE"

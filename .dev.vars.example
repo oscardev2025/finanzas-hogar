@@ -1,0 +1,7 @@
+# Copia este archivo como `.dev.vars` (sin .example) para desarrollo local.
+# `.dev.vars` está en .gitignore — nunca se sube al repo.
+# En producción estos valores se configuran en el panel de Cloudflare Pages.
+
+AUTH_USER="FamiliaPM"
+AUTH_PASS="cambia-esto-en-local"
+SESSION_SECRET="cadena-larga-y-aleatoria-solo-para-dev"
