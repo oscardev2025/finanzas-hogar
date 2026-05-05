@@ -171,22 +171,39 @@ App.calc = (function () {
     return t.balance - (t.aportes - t.retiros);
   }
 
-  // Saldo al INICIO del mes dado, partiendo de saldoInicial y caminando mes a mes.
+  // Saldo al INICIO del mes dado. Punto de anclaje: saldoInicial.
+  // - mes == ini.mes  → devuelve ini.monto.
+  // - mes >  ini.mes  → camina hacia adelante sumando balances.
+  // - mes <  ini.mes  → camina hacia atrás restando balances (mantiene la
+  //   cadena consistente: pidas el rango que pidas en flujo, el saldo
+  //   en cualquier mes da el mismo valor).
   function saldoInicioMes(mes) {
     const ini = App.state.saldoInicial || { mes: '', monto: 0 };
     if (!ini.mes) return 0;
-    if (mes <= ini.mes) return Number(ini.monto) || 0;
+    if (mes === ini.mes) return Number(ini.monto) || 0;
+
     let acc = Number(ini.monto) || 0;
-    let cur = ini.mes;
-    while (cur < mes) {
-      // Si el mes "cur" tiene cierre, usa snapshot saldoFin si existe (más rápido y consistente).
-      const c = App.state.cierres?.[cur];
-      if (c?.saldoFin != null && c?.saldoInicio != null && c.saldoInicio === acc) {
-        acc = c.saldoFin;
-      } else {
-        acc += balanceCajaMes(cur);
+
+    if (mes > ini.mes) {
+      let cur = ini.mes;
+      while (cur < mes) {
+        const c = App.state.cierres?.[cur];
+        if (c?.saldoFin != null && c?.saldoInicio != null && c.saldoInicio === acc) {
+          acc = c.saldoFin;
+        } else {
+          acc += balanceCajaMes(cur);
+        }
+        cur = addMonths(cur, 1);
       }
-      cur = addMonths(cur, 1);
+      return acc;
+    }
+
+    // mes < ini.mes: walk backward
+    let cur = ini.mes;
+    while (cur > mes) {
+      const prev = addMonths(cur, -1);
+      acc -= balanceCajaMes(prev);
+      cur = prev;
     }
     return acc;
   }
